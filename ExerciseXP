@@ -1,0 +1,86 @@
+Exercise#1 
+my_favorite_numbers = {2,4,4,6,8,10,12,32,62}
+friends_favorite_numbers = {1,3,3,5,5,6,7,8,9,0}
+
+
+my_favorite_numbers.add(5)
+my_favorite_numbers.discard(62)
+
+print(my_favorite_numbers)
+
+our_favorite_numbers = my_favorite_numbers.union(friends_favorite_numbers)
+print(our_favorite_numbers)
+
+our_favorite_numbers1 = friends_favorite_numbers.union(my_favorite_numbers)
+print(our_favorite_numbers1)
+
+# Exercise 2
+#Given a tuple which value is integers, is it possible to add more integers to the tuple?
+#It is not possible because it is immutable but you can convert it a list and 
+
+#Exercise #3
+basket = ["Banana", "Apples", "Oranges", "Blueberries"];
+
+basket.remove("Banana")
+basket.remove("Blueberries")
+basket.append("Kiwi")
+basket.insert(0,"Apples")
+
+apple_count = basket.count("Apples")
+print(apple_count)
+
+
+#Exercise #4: 
+#1 What is a float? A float is a number with a decimal point ex: 233.23
+#2: Create a list using the 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5
+list =[1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5]
+
+
+#Exercise #5: 
+#Part 1
+for i in range(1,21):
+    print(i)
+#Part 2 
+    for i in range(1,20):
+        if i%2 == 0:
+            print(i)
+
+#Exercise 6
+my_name = "Jonathan"
+
+while True:
+    user_name = input("What is your name? ")
+    if user_name.lower() == my_name.lower():
+        print(f"Hello, {my_name}!")
+        break
+    else:
+        print("That's not my name. Please try again.")
+
+#Exercise 7: Favorite Fruits 
+favorite_fruits = "apple banana orange pineapple".split()
+
+user_fruit = input("Enter the name of a fruit: ")
+if user_fruit.lower() in [fruit.lower() for fruit in favorite_fruits]:
+    print("You chose one of your favorite fruits! Enjoy!")
+else:
+    print("You chose a new fruit. I hope you enjoy.")
+
+#Exercise #7
+toppings = []
+total_price = 10 
+
+while True:
+    topping = input("Enter a pizza topping (or 'quit' to finish): ")
+    
+    if topping.lower() == 'quit':
+        break
+    
+    toppings.append(topping)
+    print(f"Adding {topping} to your pizza.")
+    total_price += 2.5  # Add the price of each topping
+
+print("\nYour pizza will have the following toppings:")
+for topping in toppings:
+    print(f"- {topping}")
+
+print(f"\nThe total price of your pizza is ${total_price:.2f}")
