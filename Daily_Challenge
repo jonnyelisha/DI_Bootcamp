@@ -1,0 +1,25 @@
+#Exercise1
+
+number  =  input("Please type in a number ")
+length =  input("type a length ")
+
+multiples =[]
+for i in range(1, length + 1):
+    multiples.append(num * i)
+
+print(multiples)
+
+#Exercise 2 
+user_word = input("user's word : ")
+
+new_word = []
+prev_char = None
+
+for char in user_word:
+    if char != prev_char:
+        new_word.append(char)
+        prev_char = char
+
+new_word = ''.join(new_word)
+
+print(f"user's word : \"{user_word}\" ➞ \"{new_word}\"")
