@@ -1,0 +1,37 @@
+word = input("Enter a word: ")
+
+word_index_dict = {}
+
+for i, char in enumerate(word):
+    if char in word_index_dict:
+        word_index_dict[char].append(i)
+    else:
+        word_index_dict[char] = [i]
+
+print(word_index_dict)
+
+Challenge 2
+items_purchase = {
+    "Water": "$1",
+    "Bread": "$3",
+    "TV": "$1,000",
+    "Fertilizer": "$20"
+}
+
+wallet = "$300"
+
+def get_affordable_items(items, wallet):
+    wallet_amount = float(wallet.replace("$", "").replace(",", ""))
+    affordable_items = []
+
+    for item, price in items.items():
+        item_price = float(price.replace("$", "").replace(",", ""))
+        if item_price <= wallet_amount:
+            affordable_items.append(item)
+
+    affordable_items.sort()
+    if not affordable_items:
+        return "Nothing"
+    return affordable_items
+
+print(get_affordable_items(items_purchase, wallet))
