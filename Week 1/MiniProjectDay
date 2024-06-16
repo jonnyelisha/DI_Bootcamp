@@ -1,0 +1,75 @@
+moves = {0: " ", 1: " ", 2: " ", 3: " ", 4: " ", 5: " ", 6: " ", 7: " ", 8: " "}
+
+def print_board(moves):
+    board = f"""
+    | {moves[0]} | {moves[1]} | {moves[2]} |
+    |---|---|---|
+    | {moves[3]} | {moves[4]} | {moves[5]} |
+    |---|---|---|
+    | {moves[6]} | {moves[7]} | {moves[8]} |
+    """
+    print(board)
+
+def check_win(moves, player):
+    # Check rows
+    for i in range(0, 9, 3):
+        if moves[i] == moves[i+1] == moves[i+2] == player:
+            return True
+    # Check columns
+    for i in range(3):
+        if moves[i] == moves[i+3] == moves[i+6] == player:
+            return True
+    # Check diagonals
+    if moves[0] == moves[4] == moves[8] == player:
+        return True
+    if moves[2] == moves[4] == moves[6] == player:
+        return True
+    return False
+
+def get_valid_move(moves):
+    while True:
+        try:
+            move = int(input("Enter your move (0-8): "))
+            if move < 0 or move > 8 or moves[move] != " ":
+                print("Invalid move. Try again.")
+                continue
+            return move
+        except ValueError:
+            print("Invalid input. Please enter a number.")
+
+def play_game():
+    moves = {0: " ", 1: " ", 2: " ", 3: " ", 4: " ", 5: " ", 6: " ", 7: " ", 8: " "}
+    player = "X"
+    
+    print_board(moves)
+    
+    move = 0
+    moves[move] = player
+    
+    print_board(moves)
+    print(moves)
+    
+    move = 0
+    if moves[move] != " ":
+        print("NOT ALLOWED")
+    else:
+        moves[move] = player
+
+    while True:
+        print_board(moves)
+        move = get_valid_move(moves)
+        moves[move] = player
+        if check_win(moves, player):
+            print_board(moves)
+            print(f"Player {player} wins!")
+            break
+        if all(moves.values()):
+            print_board(moves)
+            print("It's a tie!")
+            break
+        if player == "X":
+            player = "O"
+        else:
+            player = "X"
+
+play_game()
