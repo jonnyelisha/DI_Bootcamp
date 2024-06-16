@@ -1,0 +1,12 @@
+user_input = input("Enter a comma-separated sequence of words: ")
+sorted_words = sorted([word.strip() for word in user_input.split(",")])
+print(",".join(sorted_words))
+
+
+def longest(sentence):
+    words = [word.strip(".,!") for word in sentence.split()]
+    return max(words, key=len)
+
+print(longest("Margaret's toy is a pretty doll."))  
+print(longest("A thing of beauty is a joy forever."))  
+print(longest("Forgetfulness is by all means powerless!"))  
