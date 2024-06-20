@@ -60,7 +60,7 @@ Save the dictionary as JSON to a file."""
 
 contents_dict = json.loads(sampleJson)  # json.loads reads a json string
 print(contents_dict["company"]["employee"]["payable"]["salary"])
-contents_dict["company"]["employee"]["birth_date"] = "1999-03-21"
+contents_dict["company"]["employee"]["birth_date"] = "1998-08-30"
 new_json_file_location = "Week2/Day 4/new_data.json"
 
 with open(new_json_file_location, mode="w") as file:
