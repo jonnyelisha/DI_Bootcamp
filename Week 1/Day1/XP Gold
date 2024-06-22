@@ -20,4 +20,36 @@ print('\n'.join([line for line in ['Hello world'] * 4 + ['I love python'] * 4]))
 Explained:
 
 This line works as a line comprehension to accomplish those tasks in one line. "/n" works as a element to add a new line, and the ".join" acts an element to add the "Hello World" and "I love Python" strings together.  
-The multiplication sign acts as a way to identify the amount of times the function should go through. 
+The multiplication sign acts as a way to identify the amount of times the function should go through.
+
+
+#Exercise2 
+Ask the user to input a month (1 to 12).
+Display the season of the month received :
+Spring runs from March (3) to May (5)
+Summer runs from June (6) to August (8)
+Autumn runs from September (9) to November (11)
+Winter runs from December (12) to February (2)
+
+What we know:
+1. Asks for the users input
+2. Using if and else statements
+
+Solution:
+month = int(input("Enter a month (1 to 12): "))
+
+if month >= 3 and month <= 5:
+    season = "Spring"
+elif month >= 6 and month <= 8:
+    season = "Summer"
+elif month >= 9 and month <= 11:
+    season = "Autumn"
+elif month == 12 or month <= 2:
+    season = "Winter"
+else:
+    season = "Invalid month"
+
+print(season)
+
+Explained
+1. Uses Else/If/elif statements to categorize what the output would be.
