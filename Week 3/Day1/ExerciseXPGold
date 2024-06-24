@@ -1,0 +1,8 @@
+-- Fetch the first four students ordered alphabetically by last_name. Retrieves the first four students ordered alphabetically
+select first_name, last_name, birth_date from students order by last_name limit 4;
+
+-- Fetch the details of the youngest student. Retrieves the details about the youngest student
+select first_name, last_name, birth_date from students order by birth_date desc limit 1;
+
+-- Fetch three students skipping the first two students. Retrieves the details about three students but skipping the last two. 
+select first_name, last_name, birth_date from students offset 2 limit 3;
