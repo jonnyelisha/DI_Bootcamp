@@ -1,10 +1,15 @@
+
+/* This creates the SQL table for students with the first name and the last name */
+
+
 create table students(
     id serial primary key,
     first_name varchar(50) not null,
     last_name varchar(50) not null,
     birth_date date not null
 )
-
+ 
+/* The names of the students */
 insert into students(
     first_name, last_name, birth_date) values 
 ('Marc','Benichou','1998/11/02')
@@ -18,8 +23,6 @@ select * from first_name
 select * from last_name
 
 
-
-##
 select first_name, last_name  from students where id=2;
 select first_name, last_name  from students where last_name = 'Benichou' and first_name = 'Marc';
 select first_name, last_name  from students where last_name = 'Benichou' OR first_names are 'Marc';
