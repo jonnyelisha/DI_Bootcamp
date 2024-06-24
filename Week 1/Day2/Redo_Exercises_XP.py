@@ -7,9 +7,11 @@
 #Concatenate my_fav_numbers and friend_fav_numbers to a new variable called our_fav_number
 
 
+#List of numbers 
 my_fav_numbers = {7, 13, 42, 99}
 friend_fav_numbers = {3, 17, 31, 61}
 
+#adding numbers into it
 my_fav_numbers.add(11)
 my_fav_numbers.add(23)
 
