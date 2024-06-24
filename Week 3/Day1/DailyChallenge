@@ -28,3 +28,5 @@ VALUES('Jennifer','Anniston','1961/06/05', 2);
 
 ---Acts to count all the number of actors that are available 
 select count(*) from actors 
+
+-- If you add an actor without the respective information, it will get an error that will say that there are more target columns than inserted. 
