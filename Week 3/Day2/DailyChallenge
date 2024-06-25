@@ -1,1 +1,40 @@
+Problem: Goal is to identify what is wrong with the code and what you suggest to change for it
 
+-- not good practice to not write primary key and NOT Null, it is important to write that. Need to end it with a semicolon
+CREATE TABLE FirstTab (
+     id integer, 
+     name VARCHAR(10)
+) 
+
+--
+INSERT INTO FirstTab VALUES
+(5,'Pawan'),
+(6,'Sharlee'),
+(7,'Krish'),
+(NULL,'Avtaar')
+
+
+-- need to end it with the semicolon
+SELECT * FROM FirstTab
+
+CREATE TABLE SecondTab (
+    id integer 
+)
+
+INSERT INTO SecondTab VALUES
+(5),
+(NULL)
+
+- need to end it with semicolon 
+SELECT * FROM SecondTab
+
+
+Questions: What is the output of each one?
+1.SELECT COUNT(*) FROM FirstTab AS ft WHERE ft.id NOT IN ( SELECT id FROM SecondTab WHERE id = 5 );
+Output = 2 
+2.SELECT COUNT(*) FROM FirstTab AS ft WHERE ft.id NOT IN ( SELECT id FROM SecondTab WHERE id IS NULL );
+Output = 0 
+3.SELECT COUNT(*) FROM FirstTab AS ft WHERE ft.id NOT IN ( SELECT id FROM SecondTab )
+Output = 0 
+4.SELECT COUNT(*) FROM FirstTab AS ft WHERE ft.id NOT IN ( SELECT id FROM SecondTab WHERE id IS NOT NULL )
+Output = 2 
