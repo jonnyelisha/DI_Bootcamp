@@ -1,0 +1,137 @@
+/* Step 1: In the dvdrental database write a query to select all the columns from the “customer” table.*/
+select * from customer;
+
+/* Step 2: Write a query to display the names (first_name, last_name) using an alias named “full_name” */ 
+select concat_ws(' ',first_name, last_name) as full_name from customer;
+
+
+/* Step 3: Get all the dates that the accounts were created. */ 
+select distinct create_date from customer;
+
+
+/*Step 4: Write a query to get all the customer details from the customer table, it should be displayed in descending order by their first name. */ 
+select * from customer order by first_name desc;
+
+/* Ascending order */
+select * from customer order by first_name asc;
+
+
+/* Step 5:  Write a query to get the film ID, title, description, year of release and rental rate in ascending order according to their rental rate. */
+select film_id, description, release_year,rental_rate from film order by rental_rate asc;
+
+/* Step 6: Write a query to get the address, and the phone number of all customers living in the Texas district, these details can be found in the “address” table.cxzc */
+select * from customer inner join address on customer.address_id = address.address_id where district  = 'Texas';
+
+select address,phone from customer inner join address on customer.address_id=address.address_id where (district = 'Texas');
+
+/* Step 7: Write a query to retrieve all movie details where the movie id is either 15 or 150. */
+select * from film where (film_id=150 or film_id = 15);
+
+/* Step 8: Write a query which should check if your favorite movie exists in the database. Have your query get the film ID, title, description, length and the rental rate, these details can be found in the “film” table.*/
+select film_id,title,description,length,rental_rate from film where (title = 'Breaking Home');
+
+/*Step 9: No luck finding your movie? Maybe you made a mistake spelling the name. Write a query to get the film ID, title, description, length and the rental rate of all the movies starting with the two first letters of your favorite movie. */
+select film_id, title,description,lengYou need to check your inventory. Write a query to get all the movies which are not in inventory.th, rental_rate from film where ( title like 'Bre%');
+
+/* Step 10: Write a query which will find the 10 cheapest movies.*/
+select * from film order by rental_rate asc limit 10 ;
+
+/*Step 11: Not satisfied with the results. Write a query which will find the next 10 cheapest movies. */
+select * from film order by rental_rate asc limit 10 offset 10;
+
+/*Step 12: Write a query which will join the data in the customer table and the payment table. You want to get the first name and last name from the curstomer table, as well as the amount and the date of every payment made by a customer, ordered by their id (from 1 to…). */
+select payment.customer_id,amount,payment_date from customer inner join payment on payment.customer_id = customer.customer_id;
+
+/*Step 13: You need to check your inventory. Write a query to get all the movies which are not in inventory. */
+select * from film left join inventory on film.film_id = inventory.film_id where (inventory.film_id is null);
+
+/* Step 14: Write a query to find which city is in which country. */
+select * from city right join country on city.country_id = country.country_id;
+
+
+/*Exercise XP: Database part 2 */
+select * from language
+
+/*Step 2: Get a list of all films joined with their languages – select the following details : film title, description, and language name. */
+select * from film left join language on film.language_id =language.language_id
+
+/*Step 3 */
+select film.title, film.description,language.name from film right join language on film.language_id = language.language_id
+
+/*Step 4: Create a New Table New_Film */
+CREATE TABLE new_film( 
+	id serial primary key,
+	name varchar(100) ) 
+
+
+INSERT INTO new_film(name) VALUES 
+('Toy Story'),
+('Toy Story 2'),
+('Toy Story 3'),
+('Toy Story 4'),
+('John Wick'),
+('John Wick 2'),
+('John Wick 3'),
+('John Wick 4'), 
+('Jurassic Park'),
+('Jurassic Park 2');
+
+SELECT * FROM new_film
+
+/*STEP 5 */
+CREATE TABLE customer_review(
+	review_id serial PRIMARY KEY NOT NULL,
+ 	film_id INTEGER NOT NULL,
+ 	language_id INTEGER NOT NULL,
+ 	title VARCHAR(50),
+ 	score INT CHECK (score BETWEEN 1 AND 10),
+ 	review_text TEXT,
+ 	last_update TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+ 	FOREIGN KEY (film_id) REFERENCES new_film (id) ON DELETE CASCADE,
+ 	FOREIGN KEY (language_id) REFERENCES language(language_id) ON DELETE CASCADE
+ );
+
+/*STEP 6: add 2 movie reviews */
+INSERT INTO customer_review (film_id, language_id, title, score, review_text)
+VALUES (1, 1, 'Toys', 9, 'Toy Story is a masterpiece.'),
+(2, 1, 'Classic Film', 10, 'Toy Story 2 is an epic masterpiece.')
+
+/*Step 7: Delete a film from the table */
+DELETE FROM new_film WHERE name = 'Toy Story' 
+
+
+Exercise 2
+/*Step 1: Use UPDATE to change the language of some films. Make sure that you use valid languages. */
+UPDATE customer_review SET language_id = '2' WHERE film_id = '2'
+ 
+/*Step 2:Which foreign keys (references) are defined for the customer table? How does this affect the way in which we INSERT into the customer table? */
+'Customer Address' is the Foreign Key.It affects the way you insert data into that table because you need to ensure that the values you insert into the foreign key column that exists in the referenced table.
+ 
+/*STEP 3 */ 
+DROP TABLE customer_review
+
+Dropping a table is a dangerous operation because it effects all the following calculations and it is irreversible. 
+
+/*STEP 4 */ 
+ SELECT COUNT(*) AS outstanding_rentals from rental WHERE return_date IS NULL;
+ 
+/*STEP 5 */
+
+SELECT inventory.inventory_id, inventory.film_id, film.title, film.replacement_cost FROM film JOIN inventory ON inventory.film_id = film.film_id 
+WHERE inventory.inventory_id IN (SELECT rental.inventory_id FROM rental WHERE return_date IS NULL) ORDER BY replacement_cost DESC LIMIT 30;
+
+
+/*STEP 6: */  
+SELECT film.title, film.film_id, film.description, film_actor.actor_id FROM film  JOIN film_actor ON film.film_id = film_actor.film_id  JOIN actor ON film_actor.actor_id = actor.actor_id
+WHERE FILM.description ILIKE '%sumo%' AND (actor.first_name ='Penelope' AND actor.last_name = 'Monroe');
+SELECT film.title, film.film_id, film.description, film.rating, film.length from film WHERE film.length < 60 AND rating = 'R' ORDER BY length ASC;
+SELECT film.title, film.film_id, film.description FROM film JOIN inventory ON film.film_id = inventory.film_id JOIN rental ON inventory.inventory_id = rental.inventory_id
+JOIN customer ON rental.customer_id = customer.customer_id WHERE film.rental_rate > '4.00'
+AND rental.return_date BETWEEN '2005-07-28 00:00:00' AND '2005-08-01 23:59:59'
+AND customer.first_name ='Matthew' AND customer.last_name = 'Mahan';
+SELECT film.title, film.film_id, film.description,film.replacement_cost FROM film 
+JOIN inventory ON film.film_id = inventory.film_id
+JOIN rental ON inventory.inventory_id = rental.inventory_id
+JOIN customer ON rental.customer_id = customer.customer_id
+WHERE (film.title ILIKE '%boat%' or film.description ILIKE '%boat%')
+AND (customer.first_name ='Matthew' AND customer.last_name = 'Mahan') order by film.replacement_cost DESC;
