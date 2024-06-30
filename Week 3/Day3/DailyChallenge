@@ -1,0 +1,31 @@
+/* Create two tables: Customer and CustomerProfile */
+
+create table customer (
+	id serial primary key,
+	first_name varchar(50) not null,
+	last_name varchar(50) not null,
+);
+
+create table CustomerProfile(
+	id serial primary key
+	isLoggedIn Boolean default false
+	customer_id int unique
+	foreign key(customer_id) references customer(id));
+	
+/*Insert Customer */ 
+
+insert into customer(first_name,last_name) values ('John','Doe'), ('Jerome', 'Lalu'),('Lea','Rive');
+
+
+/* John is LoggedIn and Jerome is not LoggedIn */
+
+insert into CustomerProfile(isLoggedIn,customer_id) values (True, (select id from customer where first_name = 'John' and last_name = 'Doe'));
+, (false, (select id from customer where first_name = 'Jerome' and last_name = 'Lalu'))
+
+
+/*The first_name of the LoggedIn customers */
+
+select c.first_name from customer c join CustomerProfile cp on c.id = cp.customer_id where cp.isLoggedIn = True;
+
+/* The total number of people that are not LoggedIn */
+select count(*) as num_not_logged_in from CustomerProfile where isLoggedIn=false; 
