@@ -1,0 +1,63 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from bs4 import BeautifulSoup
+import pprint
+import pandas as pd
+import time
+
+# Configure the Selenium WebDriver
+options = webdriver.ChromeOptions()
+options.add_argument('--headless')  # Run headless to avoid UI pop-up
+options.add_argument('--no-sandbox')
+options.add_argument('--disable-dev-shm-usage')
+
+# Initialize the WebDriver
+driver = webdriver.Chrome(options=options)
+
+try:
+    # Target URL
+    url = 'https://www.rottentomatoes.com/browse/movies_at_home/critics:certified_fresh'
+    # Navigate to the page
+    driver.get(url)
+    
+    # Increase timeout and ensure correct CSS selector
+    WebDriverWait(driver, 20).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, 'div.mb-movies'))
+    )
+    
+    # Optional: Print page source for debugging
+    # print(driver.page_source)
+
+    # Scroll to the bottom to load all movies (if needed)
+    last_height = driver.execute_script("return document.body.scrollHeight")
+    while True:
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        time.sleep(2)  # Wait to load the page
+        new_height = driver.execute_script("return document.body.scrollHeight")
+        if new_height == last_height:
+            break
+        last_height = new_height
+
+    # Extract the HTML content
+    page_source = driver.page_source
+
+finally:
+    # Quit the WebDriver
+    driver.quit()
+
+# Parse the HTML with BeautifulSoup
+soup = BeautifulSoup(page_source, 'html.parser')
+
+# Find and extract the desired movie information
+movies = []
+for movie in soup.select('div.mb-movie'):
+    title = movie.select_one('h3.movieTitle').get_text(strip=True)
+    score = movie.select_one('span.tMeterScore').get_text(strip=True) if movie.select_one('span.tMeterScore') else 'N/A'
+    release_date = movie.select_one('p.movie_year').get_text(strip=True)
+    movies.append({
+        'Title': title,
+        'Score': score,
+        'Release Date': release_date
+    })

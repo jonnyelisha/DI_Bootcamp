@@ -1,0 +1,166 @@
+#Exercise 1
+
+from urllib.request import urlopen
+from bs4 import BeautifulSoup
+import requests
+
+html_content = '''
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports World</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        header, nav, section, article, footer { margin: 20px; padding: 15px; }
+        nav { background-color: #333; }
+        nav a { color: white; padding: 14px 20px; text-decoration: none; display: inline-block; }
+        nav a:hover { background-color: #ddd; color: black; }
+        .video { text-align: center; margin: 20px 0; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Welcome to Sports World</h1>
+        <p>Your one-stop destination for the latest sports news and videos.</p>
+    </header>
+
+    <nav>
+        <a href="#football">Football</a>
+        <a href="#basketball">Basketball</a>
+        <a href="#tennis">Tennis</a>
+    </nav>
+
+    <section id="football">
+        <h2>Football</h2>
+        <article>
+            <h3>Latest Football News</h3>
+            <p>Read about the latest football matches and player news.</p>
+            <div class="video">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/football-video-id" frameborder="0" allowfullscreen>
+                </iframe>
+            </div>
+        </article>
+    </section>
+
+    <section id="basketball">
+        <h2>Basketball</h2>
+        <article>
+            <h3>NBA Highlights</h3>
+            <p>Watch highlights from the latest NBA games.</p>
+            <div class="video">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/basketball-video-id" frameborder="0" allowfullscreen>
+                </iframe>
+            </div>
+        </article>
+    </section>
+
+    <section id="tennis">
+        <h2>Tennis</h2>
+        <article>
+            <h3>Grand Slam Updates</h3>
+            <p>Get the latest updates from the world of Grand Slam tennis.</p>
+            <div class="video">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/tennis-video-id" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </article>
+    </section>
+
+    <footer>
+        <form action="mailto:contact@sportsworld.com" method="post" enctype="text/plain">
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name"><br>
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email"><br>
+            <label for="message">Message:</label><br>
+            <textarea id="message" name="message" rows="4" cols="50"></textarea><br><br>
+            <input type="submit" value="Send">
+        </form>
+    </footer>
+
+</body>
+</html>
+'''
+
+soup = BeautifulSoup(html_content, 'html.parser')
+
+title = soup.title.string
+print("Title of the webpage:", title)
+
+paragraphs = soup.find_all('p')
+print("\nParagraphs on the page:")
+for p in paragraphs:
+    print(p.get_text())
+
+links = soup.find_all('a')
+print("\nLinks on the page:")
+for link in links:
+    href = link.get('href')
+    if href:
+        print(href)
+
+
+#Exercise 2
+# Write a Python program to download and display the content of robot.txt for en.wikipedia.org
+
+url = 'https://en.wikipedia.org/wiki/Robots.txt'
+response = requests.get(url)
+soup = BeautifulSoup(response.text, 'html.parser')
+print(response.text)
+
+
+#Exercise 3
+## Write a Python program to extract and display all the header tags from en.wikipedia.org/wiki/Main_Page.
+
+url = 'https://en.wikipedia.org/wiki/Main_Page'
+response = requests.get(url)
+
+soup = BeautifulSoup(response.text, 'lxml')
+# creating a list of all common heading tags
+heading_tags = ["h1", "h2", "h3"]
+for tags in soup.find_all(heading_tags):
+    print(tags.name + '->' + tags.text.strip())
+
+# Exercise 4
+# Write a Python program to check whether a page contains a title or not.
+
+url = 'https://google.com'
+response = requests.get(url)
+soup = BeautifulSoup(response.text, 'html.parser')
+# displaying the title
+for title in soup.find_all('title'):
+    if title == None:
+        print('The website does not have a title')
+    else:
+        print('The title of the website is:', title.get_text())
+
+
+    #Exercise 6
+url = 'https://www.imdb.com/list/ls091294718/'
+response = requests.get(url)
+soup = BeautifulSoup(response.text, 'html.parser')
+
+movies = []
+
+movie_items = soup.find_all('div', class_='lister-item-content', limit=10)
+
+    # Extract movie name, year, and brief summary for the top 10 movies
+for item in movie_items:
+        name = item.h3.a.text
+        year = item.h3.find('span', class_='lister-item-year').text.strip('()')
+        summary = item.find_all('p', class_='text-muted')[1].text.strip()
+        movies.append({
+            'name': name,
+            'year': year,
+            'summary': summary
+        })
+
+    # Print the movies list
+for movie in movies:
+        print(f"Name: {movie['name']}\nYear: {movie['year']}\nSummary: {movie['summary']}\n")
+
+
+
+
