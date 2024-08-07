@@ -1,0 +1,52 @@
+import bs4
+from bs4 import BeautifulSoup
+import pandas as pd
+from selenium import webdriver
+
+# Initialize WebDriver
+driver = webdriver.Chrome()
+
+# Load the web page
+url = 'https://www.inmotionhosting.com/'
+driver.get(url)
+
+# Get the page source
+page_source = driver.page_source
+
+# Parse the HTML with BeautifulSoup
+soup = BeautifulSoup(page_source, 'html.parser')
+
+plan_cards = soup.select('.imh-rostrum-card')
+
+titles = []
+features = []
+prices = []
+
+for card in plan_cards:
+    # Extract title
+    title_element = card.select_one('.imh-rostrum-card-title')
+    title = title_element.get_text(strip=True) if title_element else 'N/A'
+    titles.append(title)
+    
+    # Extract features
+    feature_element = card.select_one('.imh-rostrum-sub-title')
+    feature = feature_element.get_text(strip=True) if feature_element else 'N/A'
+    features.append(feature)
+    
+    # Extract prices
+    price_elements = card.select('.imh-rostrum-starting-at-price-discounted .rostrum-price')
+    prices.append([price.get_text(strip=True) for price in price_elements])
+
+# Convert list of prices to a flat string for each plan
+prices_flat = ['; '.join(price) for price in prices]
+
+df = pd.DataFrame({
+    'Title': titles,
+    'Features': features,
+    'Prices': prices_flat
+})
+
+df.to_csv('hosting_plans.csv', index=False)
+
+# Close WebDriver
+driver.quit()
