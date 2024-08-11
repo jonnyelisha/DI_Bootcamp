@@ -1,0 +1,28 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+file_path = 'productSales.xlsx' 
+df = pd.read_excel(file_path)
+
+# Manipulate the data by grouping by 'product' and summing the sales
+grouped_df = df.groupby('product')['sales'].sum().reset_index()
+
+plt.figure(figsize=(10, 6))
+plt.bar(grouped_df['product'], grouped_df['sales'], color='skyblue')
+plt.title('Total Sales by Product')
+plt.xlabel('Product')
+plt.ylabel('Total Sales')
+plt.xticks(rotation=45)
+plt.tight_layout()
+
+# Save the plot as an image
+plt.savefig('sales_report_plot.png')
+
+plt.show()
+
+# Export the grouped data to a new Excel file
+output_file_path = 'sales_report.xlsx'
+with pd.ExcelWriter(output_file_path, engine='openpyxl') as writer:
+    grouped_df.to_excel(writer, sheet_name='Sales_Summary', index=False)
+
+print(f"Data has been grouped, plotted, and saved to '{output_file_path}'!")

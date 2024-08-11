@@ -1,0 +1,12 @@
+import pandas as pd
+
+file_path = 'data.xlsx'
+df = pd.read_excel(file_path)
+
+filtered_df = df[df['Sales'] > 1000]
+
+# Write the filtered data back to the Excel file using openpyxl
+with pd.ExcelWriter(file_path, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
+    filtered_df.to_excel(writer, sheet_name='Filtered_Sales', index=False)
+
+print("Filtered data has been updated to the Excel file!")
